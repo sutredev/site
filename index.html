@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Locked Page</title>
+  <title>Puzzle Page</title>
   <script>
-    const password = "prophet";
+    // Password visible in the code for anyone who opens F12!
+    const PASSWORD = "prophet";
+
     function checkPassword() {
       const input = document.getElementById("pass").value;
-      if (input === password) {
+      if (input === PASSWORD) {
         document.getElementById("auth").style.display = "none";
         document.getElementById("secret").style.display = "block";
       } else {
-        alert("Wrong password.");
+        alert("Wrong password, try again!");
       }
     }
   </script>
 </head>
 <body>
   <div id="auth">
-    <input type="password" id="pass" placeholder="Enter password">
-    <button onclick="checkPassword()">Enter</button>
+    <h2>Enter password to unlock:</h2>
+    <input type="password" id="pass" placeholder="Enter password here">
+    <button onclick="checkPassword()">Unlock</button>
   </div>
 
-  <div id="secret" style="display: none;">
-    <h1> seek steam, koo foo gee gee</h1>
+  <div id="secret" style="display:none;">
+    <h1>koo foo gee gee</h1>
   </div>
 </body>
 </html>
