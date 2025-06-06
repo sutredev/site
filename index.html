@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Locked Page</title>
+  <script>
+    const password = "prophet";
+    function checkPassword() {
+      const input = document.getElementById("pass").value;
+      if (input === password) {
+        document.getElementById("auth").style.display = "none";
+        document.getElementById("secret").style.display = "block";
+      } else {
+        alert("Wrong password.");
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="auth">
+    <input type="password" id="pass" placeholder="Enter password">
+    <button onclick="checkPassword()">Enter</button>
+  </div>
+
+  <div id="secret" style="display: none;">
+    <h1> seek steam, koo foo gee gee</h1>
+  </div>
+</body>
+</html>
