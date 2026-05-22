@@ -1,1 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUZZLE BOX</title>
 
+<style>
+
+body{
+    margin:0;
+    background:black;
+    color:#00ff66;
+    font-family:monospace;
+    overflow:hidden;
+}
+
+.scanlines::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:
+    repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events:none;
+    z-index:999;
+}
+
+.container{
+    position:relative;
+    z-index:2;
+    padding:40px;
+}
+
+.glitch{
+    font-size:3rem;
+    position:relative;
+    animation:flicker 2s infinite;
+}
+
+.glitch::before,
+.glitch::after{
+    content:attr(data-text);
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+.glitch::before{
+    color:red;
+    transform:translate(-2px,0);
+    opacity:0.5;
+}
+
+.glitch::after{
+    color:cyan;
+    transform:translate(2px,0);
+    opacity:0.5;
+}
+
+@keyframes flicker{
+    0%{opacity:1;}
+    5%{opacity:0.4;}
+    10%{opacity:1;}
+    15%{opacity:0.2;}
+    20%{opacity:1;}
+    100%{opacity:1;}
+}
+
+.backgroundText{
+    position:fixed;
+    color:#00ff6622;
+    font-size:2rem;
+    pointer-events:none;
+    user-select:none;
+    animation:float 12s linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-120vh);
+    }
+}
+
+input{
+    width:100%;
+    background:black;
+    color:#00ff66;
+    border:1px solid #00ff66;
+    padding:12px;
+    font-family:monospace;
+    margin-top:20px;
+}
+
+button{
+    margin-top:10px;
+    padding:10px 20px;
+    background:#00ff66;
+    color:black;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#message{
+    margin-top:20px;
+}
+
+#chatSection{
+    margin-top:30px;
+}
+
+.chatbox{
+    height:300px;
+    overflow-y:auto;
+    border:1px solid #00ff66;
+    padding:10px;
+    background:#020202;
+}
+
+.chatInput{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.hidden{
+    display:none;
+}
+
+.fakeWarning{
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    color:red;
+    opacity:0.3;
+    animation:flicker 1s infinite;
+}
+
+</style>
+</head>
+
+<body class="scanlines">
+
+<div class="container">
+
+<h1 class="glitch" data-text="PUZZLE BOX">
+PUZZLE BOX
+</h1>
+
+<p>SYSTEM AWAITING INPUT</p>
+
+<input type="password" id="passwordInput" placeholder="ENTER PASSWORD">
+
+<button onclick="checkPassword()">ACCESS</button>
+
+<div id="message"></div>
+
+<div id="chatSection" class="hidden">
+
+<div class="chatbox" id="chatbox"></div>
+
+<div class="chatInput">
+<input type="text" id="chatInput" placeholder="RESPOND">
+<button onclick="sendMessage()">SEND</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="fakeWarning">
+USE YOUR HEAD
+</div>
+
+<script>
+
+const FIRST_PASSWORD = "RUBIX";
+const SECOND_PASSWORD = "L0G1T3CH";
+
+const YOUTUBE_LINK = "https://youtube.com/";
+const FINAL_IMAGE_LINK = "https://example.com/final.jpg";
+
+const CORRECT_COORDINATES = "CORRECT_COORDINATES";
+
+const message = document.getElementById("message");
+const chatbox = document.getElementById("chatbox");
+const chatSection = document.getElementById("chatSection");
+
+function checkPassword(){
+
+    const value = document
+        .getElementById("passwordInput")
+        .value
+        .trim();
+
+    if(value === FIRST_PASSWORD){
+
+        message.innerHTML = `
+        ACCESS ACCEPTED.<br><br>
+
+        <a href="${YOUTUBE_LINK}" target="_blank">
+        OPEN RECORDING
+        </a>
+        `;
+
+    }
+
+    else if(value === SECOND_PASSWORD){
+
+        message.innerHTML = `
+        SECONDARY TERMINAL UNLOCKED.
+        `;
+
+        chatSection.classList.remove("hidden");
+
+        botMessage("pelase say the coordinates to continue");
+
+    }
+
+    else{
+
+        message.innerHTML = `
+        ACCESS DENIED
+        `;
+    }
+}
+
+function botMessage(text){
+
+    const div = document.createElement("div");
+
+    div.innerHTML = `
+    <div style="margin-bottom:10px;">
+    <span style="color:red;">[BOT]</span>
+    ${text}
+    </div>
+    `;
+
+    chatbox.appendChild(div);
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function userMessage(text){
+
+    const div = document.createElement("div");
+
+    div.innerHTML = `
+    <div style="margin-bottom:10px;">
+    <span style="color:cyan;">[YOU]</span>
+    ${text}
+    </div>
+    `;
+
+    chatbox.appendChild(div);
+
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function sendMessage(){
+
+    const input = document.getElementById("chatInput");
+
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    userMessage(text);
+
+    input.value = "";
+
+    setTimeout(()=>{
+
+        if(text === CORRECT_COORDINATES){
+
+            botMessage(`
+coordinates verified.<br><br>
+
+final archive:<br>
+<a href="${FINAL_IMAGE_LINK}" target="_blank">
+OPEN FILE
+</a>
+            `);
+
+        }else{
+
+            const responses = [
+                "pelase say the coordinates to continue",
+                "incorrect",
+                "USE YOUR HEAD",
+                "wrong location",
+                "signal mismatch",
+                "try again"
+            ];
+
+            const random =
+                responses[
+                    Math.floor(Math.random()*responses.length)
+                ];
+
+            botMessage(random);
+        }
+
+    },700);
+}
+
+function createFloatingText(){
+
+    const words = [
+        "USE YOUR HEAD",
+        "PUZZLE BOX",
+        "LOOK CLOSER",
+        "WAKE UP",
+        "THE ANSWER IS THERE"
+    ];
+
+    const div = document.createElement("div");
+
+    div.className = "backgroundText";
+
+    div.innerText =
+        words[Math.floor(Math.random()*words.length)];
+
+    div.style.left = Math.random()*100 + "vw";
+
+    div.style.animationDuration =
+        (8 + Math.random()*10) + "s";
+
+    document.body.appendChild(div);
+
+    setTimeout(()=>{
+        div.remove();
+    },15000);
+}
+
+setInterval(createFloatingText,1200);
+
+</script>
+
+</body>
+</html>
